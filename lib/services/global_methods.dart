@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 
 class GlobalMethods {
-  dynamic navigateTo({required BuildContext ctx, required String routeName}) {
+  static navigateTo({required BuildContext ctx, required String routeName}) {
     Navigator.pushNamed(ctx, routeName);
   }
 

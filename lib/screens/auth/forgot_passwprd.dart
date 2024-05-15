@@ -10,7 +10,7 @@ import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/auth_button.dart';
+import 'package:mobile_app/widgets/button_widget.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/google_auth_button.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
@@ -130,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     SizedBox(
                       height: 15,
                     ),
-                    AuthButton(
+                    ButtonWidget(
                       fct: _forgotPasswordFCT,
                       buttonText: 'Reset Now',
                       primary: Color(0xff696969),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/provider/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
+import 'package:mobile_app/screens/wallet/wallet_screen.dart';
 import 'package:mobile_app/screens/categories.screen.dart';
 import 'package:mobile_app/screens/home.screen.dart';
 import 'package:mobile_app/screens/profile.screen.dart';
-import 'package:mobile_app/screens/cart/shopping_cart.screen.dart';
+import 'package:mobile_app/screens/wallet/shopping_cart.screen.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   final List<Map<String, dynamic>> _pages = [
     {'page': const HomeScreen(), 'title': 'Home Screen'},
     {'page': CategoriesScreen(), 'title': 'Categories Screen'},
-    {'page': const ShoppingCartScreen(), 'title': 'Shopping Cart Screen'},
+    {'page': const WalletScreen(), 'title': 'Shopping Cart Screen'},
     {'page': const ProfileScreen(), 'title': 'Profile  Screen'},
   ];
   void _selectedPage(int index) {
@@ -61,26 +62,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                   : IconlyLight.category),
               label: "Categories"),
           BottomNavigationBarItem(
-              icon: Consumer<CartProvider>(builder: (_, myCart, ch) {
-                return badges.Badge(
-                  badgeContent: FittedBox(
-                      child: TextWidget(
-                          text: myCart.getCartItems.length.toString(),
-                          color: Colors.white,
-                          textSize: 15)),
-                  position: badges.BadgePosition.topEnd(top: -15, end: -10),
-                  badgeStyle: badges.BadgeStyle(
-                    shape: badges.BadgeShape.circle,
-                    badgeColor: Colors.blue,
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.white, width: 2),
-                    elevation: 0,
-                  ),
-                  child: Icon(
-                      _selectedIndex == 2 ? IconlyBold.buy : IconlyLight.buy),
-                );
-              }),
-              label: "Shoppping Cart"),
+              icon: Icon(
+                  _selectedIndex == 3 ? IconlyBold.wallet : IconlyLight.wallet),
+              label: "Categories"),
           BottomNavigationBarItem(
               icon: Icon(
                   _selectedIndex == 3 ? IconlyBold.user2 : IconlyLight.user2),

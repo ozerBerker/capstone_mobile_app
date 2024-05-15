@@ -6,12 +6,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/consts.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
+import 'package:mobile_app/fetch_screen.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/bottom_bar.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/auth_button.dart';
+import 'package:mobile_app/widgets/button_widget.dart';
 import 'package:mobile_app/widgets/google_auth_button.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -73,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'createTime': Timestamp.now(),
         });
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const BottomBarScreen(),
+          builder: (context) => const FetchScreen(),
         ));
         print('Succefully registered');
       } on FirebaseException catch (error) {
@@ -303,7 +304,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    AuthButton(
+                    ButtonWidget(
                         fct: _submitFormOnRegister, buttonText: 'Sign up'),
                     const SizedBox(
                       height: 10,

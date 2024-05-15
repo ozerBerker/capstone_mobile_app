@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/foodBowl_model.dart';
 import 'package:mobile_app/models/products_model.dart';
+import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/empty_products_widget.dart';
-import 'package:mobile_app/widgets/on_sale_widget.dart';
+import 'package:mobile_app/widgets/feed_us_widget.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 
-class OnSaleScreen extends StatelessWidget {
-  static const routeName = "/OnSaleScreen";
-  const OnSaleScreen({super.key});
+class FeedUsScreen extends StatelessWidget {
+  static const routeName = "/FeedUsScreen";
+  const FeedUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +22,8 @@ class OnSaleScreen extends StatelessWidget {
     Size size = utils.getScreenSize;
     Color color = utils.color;
 
-    final productProviders = Provider.of<ProductsProvider>(context);
-    List<ProductModel> onSaleProducts = productProviders.getOnSaleProducts;
+    final foodBowlProvider = Provider.of<FoodBowlProvider>(context);
+    List<FoodBowlModel> onSaleProducts = foodBowlProvider.getFoodBowls;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,11 +45,11 @@ class OnSaleScreen extends StatelessWidget {
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
-              childAspectRatio: size.width / (size.height * 0.45),
+              childAspectRatio: size.width / (size.height * 0.75),
               children: List.generate(onSaleProducts.length, (index) {
                 return ChangeNotifierProvider.value(
                   value: onSaleProducts[index],
-                  child: const OnSaleWidget(),
+                  child: const FeedUsWidget(),
                 );
               }),
             ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 
-class AuthButton extends StatelessWidget {
-  const AuthButton({
+class ButtonWidget extends StatelessWidget {
+  const ButtonWidget({
     super.key,
     required this.fct,
     required this.buttonText,

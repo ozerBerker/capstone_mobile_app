@@ -1,6 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/inner_screens/product_details_screen.dart';
+import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
@@ -21,8 +21,8 @@ class _OrderWidgetState extends State<OrderWidget> {
     return ListTile(
       subtitle: const Text('Paid: \$12.8'),
       onTap: () {
-        GlobalMethods()
-            .navigateTo(ctx: context, routeName: ProductDetails.routeName);
+        GlobalMethods.navigateTo(
+            ctx: context, routeName: FoodBowlDetail.routeName);
       },
       leading: FancyShimmerImage(
         width: size.width * 0.2,

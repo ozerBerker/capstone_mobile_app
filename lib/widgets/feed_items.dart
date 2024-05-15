@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
-import 'package:mobile_app/inner_screens/product_details_screen.dart';
+import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
+import 'package:mobile_app/models/foodBowl_model.dart';
 import 'package:mobile_app/models/products_model.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/wishlist_provider.dart';
@@ -42,154 +43,119 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     Size size = utils.getScreenSize;
     Color color = utils.color;
 
-    final productModel = Provider.of<ProductModel>(context);
+    final foodBowlModel = Provider.of<FoodBowlModel>(context);
 
     final cartProvider = Provider.of<CartProvider>(context);
 
-    bool? _isCInCart = cartProvider.getCartItems.containsKey(productModel.id);
+    bool? _isCInCart = cartProvider.getCartItems.containsKey(foodBowlModel.id);
 
     final wishlistProvider = Provider.of<WishlistProvider>(context);
 
     bool? _isInWishlist =
-        wishlistProvider.getWishlistItems.containsKey(productModel.id);
+        wishlistProvider.getWishlistItems.containsKey(foodBowlModel.id);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).cardColor,
+        color: Colors.grey.shade200,
         child: InkWell(
           onTap: () {
             // GlobalMethods()
             //     .navigateTo(ctx: context, routeName: ProductDetails.routeName);
-            Navigator.pushNamed(context, ProductDetails.routeName,
-                arguments: productModel.id);
+            Navigator.pushNamed(context, FoodBowlDetail.routeName,
+                arguments: foodBowlModel.id);
           },
           borderRadius: BorderRadius.circular(12),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               FancyShimmerImage(
-                imageUrl: productModel.imageUrl,
-                height: size.width * 0.15,
-                width: size.width * 0.15,
+                imageUrl: foodBowlModel.imageUrl,
+                height: size.width * 0.2,
+                width: size.width * 0.2,
                 boxFit: BoxFit.fill,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: TextWidget(
-                        text: productModel.title,
-                        color: color,
-                        maxLines: 1,
-                        textSize: 16,
-                        isTitle: true,
-                      ),
-                    ),
-                    Flexible(
-                        flex: 1,
-                        child: HeartButton(
-                          productId: productModel.id,
-                          isInWishlist: _isInWishlist,
-                        )),
-                  ],
-                ),
+              TextWidget(
+                text: foodBowlModel.location,
+                color: color,
+                textSize: 22,
+                isTitle: true,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: productModel.isPiece ? 3 : 6,
-                      child: PriceWidget(
-                        salePrice: productModel.salePrice,
-                        price: productModel.price,
-                        textPrice: _quantityTextController.text,
-                        isOnSale: productModel.isOnSale,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: Row(
-                        children: [
-                          FittedBox(
-                            child: TextWidget(
-                              text: productModel.isPiece ? 'Piece' : 'Kg',
-                              color: color,
-                              textSize: 16,
-                              isTitle: true,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Flexible(
-                              flex: 2,
-                              child: TextFormField(
-                                controller: _quantityTextController,
-                                key: const ValueKey('10'),
-                                style: TextStyle(color: color, fontSize: 16),
-                                keyboardType: TextInputType.number,
-                                maxLines: 1,
-                                enabled: true,
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp('[0-9.]'))
-                                ],
-                              )),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: _isCInCart
-                      ? null
-                      : () {
-                          // if (_isCInCart) {
-                          //   return;
-                          // }
-                          final User? user = authInstance.currentUser;
-                          if (user == null) {
-                            GlobalMethods.errorDialog(
-                                subtitle: 'No user found, please log in first',
-                                context: context);
-                            return;
-                          }
-                          cartProvider.addProductsToCart(
-                              productId: productModel.id,
-                              quantity:
-                                  int.parse(_quantityTextController.text));
-                        },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).cardColor),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0),
-                          ),
-                        ),
-                      )),
-                  child: TextWidget(
-                    text: _isCInCart ? 'In Cart' : 'Add to card',
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextWidget(
+                    text: 'Bowl: ',
                     color: color,
-                    textSize: 16,
-                    maxLines: 1,
+                    textSize: 14,
+                    isTitle: true,
                   ),
-                ),
-              )
+                  TextWidget(
+                      text: foodBowlModel.bowlLevel,
+                      color: color,
+                      textSize: 14),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextWidget(
+                    text: 'Container: ',
+                    color: color,
+                    textSize: 14,
+                    isTitle: true,
+                  ),
+                  TextWidget(
+                      text: foodBowlModel.containerSlot.toString(),
+                      color: color,
+                      textSize: 14),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Flexible(
+                    flex: 2,
+                    child: TextFormField(
+                      controller: _quantityTextController,
+                      key: const ValueKey('10'),
+                      style: TextStyle(color: color, fontSize: 16),
+                      keyboardType: TextInputType.number,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      enabled: true,
+                      onChanged: (value) {},
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+                      ],
+                    )),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(size.width * 0.3, size.height * 0.05),
+                    backgroundColor: Colors.teal,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: TextWidget(
+                    text: 'Donate',
+                    color: Colors.white,
+                    textSize: 20,
+                    isTitle: true,
+                  )),
             ],
           ),
         ),

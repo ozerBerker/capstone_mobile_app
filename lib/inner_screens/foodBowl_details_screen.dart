@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
+import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/providers/viewed_provider.dart';
 import 'package:mobile_app/providers/wishlist_provider.dart';
@@ -16,16 +17,16 @@ import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 
-class ProductDetails extends StatefulWidget {
-  static const routeName = '/ProductDetails';
+class FoodBowlDetail extends StatefulWidget {
+  static const routeName = '/FoodBowlDetail';
 
-  const ProductDetails({super.key});
+  const FoodBowlDetail({super.key});
 
   @override
-  State<ProductDetails> createState() => _ProductDetailsState();
+  State<FoodBowlDetail> createState() => _FoodBowlDetailState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _FoodBowlDetailState extends State<FoodBowlDetail> {
   final _quantityTextController = TextEditingController(text: '1');
 
   @override
@@ -40,32 +41,16 @@ class _ProductDetailsState extends State<ProductDetails> {
     Size size = utils.getScreenSize;
     Color color = utils.color;
 
-    final productProviders = Provider.of<ProductsProvider>(context);
+    final foodBowlProvider = Provider.of<FoodBowlProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
 
-    final productId = ModalRoute.of(context)!.settings.arguments as String;
+    final foodBowlId = ModalRoute.of(context)!.settings.arguments as String;
 
-    final getCurrProduct = productProviders.findProductById(productId);
+    final getCurrFoodBowl = foodBowlProvider.findProductById(foodBowlId);
 
-    double usedPrice = getCurrProduct.isOnSale
-        ? getCurrProduct.salePrice
-        : getCurrProduct.price;
-
-    double totalPrice = usedPrice * int.parse(_quantityTextController.text);
-
-    bool? _isCInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
-
-    final wishlistProvider = Provider.of<WishlistProvider>(context);
-
-    bool? _isInWishlist =
-        wishlistProvider.getWishlistItems.containsKey(getCurrProduct.id);
-
-    final viewedProductProvider = Provider.of<ViewedProductProvider>(context);
+    final totalPrice = 0;
 
     return PopScope(
-      onPopInvoked: (didPop) {
-        viewedProductProvider.addProductToHistory(productId: productId);
-      },
       child: Scaffold(
         appBar: AppBar(
             leading: InkWell(
@@ -85,7 +70,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             Flexible(
               flex: 2,
               child: FancyShimmerImage(
-                imageUrl: getCurrProduct.imageUrl,
+                imageUrl: getCurrFoodBowl.imageUrl,
                 boxFit: BoxFit.fill,
                 width: size.width,
               ),
@@ -110,15 +95,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                           children: [
                             Flexible(
                               child: TextWidget(
-                                text: getCurrProduct.title,
+                                text: getCurrFoodBowl.location,
                                 color: color,
                                 textSize: 25,
                                 isTitle: true,
                               ),
-                            ),
-                            HeartButton(
-                              productId: getCurrProduct.id,
-                              isInWishlist: _isInWishlist,
                             ),
                           ],
                         ),
@@ -130,29 +111,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             TextWidget(
-                              text: '\$${usedPrice.toStringAsFixed(2)}',
+                              text:
+                                  '\$${getCurrFoodBowl.price.toStringAsFixed(2)}',
                               color: color,
                               textSize: 22,
                               isTitle: true,
                             ),
                             TextWidget(
-                              text: getCurrProduct.isPiece ? '/Piece' : '/Kg',
+                              text: 'KG',
                               color: color,
                               textSize: 12,
                               isTitle: false,
                             ),
                             const SizedBox(
                               width: 10,
-                            ),
-                            Visibility(
-                              visible: getCurrProduct.isOnSale ? true : false,
-                              child: Text(
-                                '\$${getCurrProduct.price.toStringAsFixed(2)}',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: color,
-                                    decoration: TextDecoration.lineThrough),
-                              ),
                             ),
                             const Spacer(),
                             Container(
@@ -163,11 +135,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                               decoration: BoxDecoration(
                                   color: Color.fromRGBO(63, 200, 101, 1),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: TextWidget(
-                                text: 'Free delivery',
-                                color: Colors.white,
-                                textSize: 20,
-                                isTitle: true,
+                              child: Row(
+                                children: [
+                                  TextWidget(
+                                    text: 'Feed Us',
+                                    color: Colors.white,
+                                    textSize: 20,
+                                    isTitle: true,
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Icon(
+                                      Icons.pets,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
                               ),
                             )
                           ],
@@ -297,30 +280,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                               color: Colors.green,
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
-                                onTap: _isCInCart
-                                    ? null
-                                    : () {
-                                        final User? user =
-                                            authInstance.currentUser;
-                                        if (user == null) {
-                                          GlobalMethods.errorDialog(
-                                              subtitle:
-                                                  'No user found, please log in first',
-                                              context: context);
-                                          return;
-                                        }
-                                        cartProvider.addProductsToCart(
-                                            productId: getCurrProduct.id,
-                                            quantity: int.parse(
-                                                _quantityTextController.text));
-                                      },
+                                onTap: () {
+                                  final User? user = authInstance.currentUser;
+                                },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(
                                   padding: EdgeInsets.all(12.0),
                                   child: TextWidget(
-                                      text: _isCInCart
-                                          ? 'In Cart'
-                                          : 'Add to cart',
+                                      text: 'Donate',
                                       color: Colors.white,
                                       textSize: 18),
                                 ),

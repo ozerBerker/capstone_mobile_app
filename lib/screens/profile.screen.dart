@@ -11,8 +11,8 @@ import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/screens/orders/order_screen.dart';
 import 'package:mobile_app/screens/viewed/viewed_screen.dart';
-import 'package:mobile_app/screens/wishlist/wishlist_screen.dart';
 import 'package:mobile_app/services/global_methods.dart';
+import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -82,15 +82,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
     final Color color = themeState.getDarkTheme ? Colors.white : Colors.black;
+    final size = Utils(context).getScreenSize;
     return Scaffold(
         body: LoadingManager(
       isLoading: _isLoading,
       child: Center(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/box.png',
+                      height: size.width * 0.2,
+                    ),
+                  ),
+                ],
+              ),
               RichText(
                   text: TextSpan(
                       text: 'Hi,   ',
@@ -136,26 +148,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: 'Orders',
                 icon: IconlyLight.bag,
                 onPressed: () {
-                  GlobalMethods().navigateTo(
+                  GlobalMethods.navigateTo(
                       ctx: context, routeName: OrderScreen.routeName);
-                },
-                color: color,
-              ),
-              _listTiles(
-                title: 'Wishlist',
-                icon: IconlyLight.heart,
-                onPressed: () {
-                  GlobalMethods().navigateTo(
-                      ctx: context, routeName: WishlistScreen.routeName);
-                },
-                color: color,
-              ),
-              _listTiles(
-                title: 'Viewed',
-                icon: IconlyLight.show,
-                onPressed: () {
-                  GlobalMethods().navigateTo(
-                      ctx: context, routeName: ViewedScreen.routeName);
                 },
                 color: color,
               ),
@@ -184,6 +178,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 value: themeState.getDarkTheme,
+              ),
+              SizedBox(
+                height: 10,
               ),
               _listTiles(
                 title: user == null ? 'Login' : 'Logout',

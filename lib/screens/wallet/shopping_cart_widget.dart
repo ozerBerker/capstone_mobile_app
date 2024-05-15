@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mobile_app/inner_screens/product_details_screen.dart';
+import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
 import 'package:mobile_app/models/cart_model.dart';
 import 'package:mobile_app/models/products_model.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
@@ -64,7 +64,7 @@ class _ShoppingCartWidgetState extends State<ShoppingCartWidget> {
       onTap: () {
         // GlobalMethods()
         //     .navigateTo(ctx: context, routeName: ProductDetails.routeName);
-        Navigator.pushNamed(context, ProductDetails.routeName,
+        Navigator.pushNamed(context, FoodBowlDetail.routeName,
             arguments: cartModel.productId);
       },
       child: Row(

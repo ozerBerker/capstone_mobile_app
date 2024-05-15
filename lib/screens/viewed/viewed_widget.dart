@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
-import 'package:mobile_app/inner_screens/product_details_screen.dart';
+import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
 import 'package:mobile_app/models/vieved_model.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/products_provider.dart';

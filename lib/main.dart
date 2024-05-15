@@ -2,23 +2,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/consts/theme_data.dart';
+import 'package:mobile_app/fetch_screen.dart';
 import 'package:mobile_app/firebase_options.dart';
 import 'package:mobile_app/inner_screens/category_screen.dart';
 import 'package:mobile_app/inner_screens/feed_screen.dart';
-import 'package:mobile_app/inner_screens/on_sale_screen.dart';
-import 'package:mobile_app/inner_screens/product_details_screen.dart';
+import 'package:mobile_app/inner_screens/feed_us_screen.dart';
+import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
 import 'package:mobile_app/provider/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
+import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/providers/viewed_provider.dart';
 import 'package:mobile_app/providers/wishlist_provider.dart';
 import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/auth/register.dart';
-import 'package:mobile_app/screens/bottom_bar.dart';
 import 'package:mobile_app/screens/orders/order_screen.dart';
 import 'package:mobile_app/screens/viewed/viewed_screen.dart';
-import 'package:mobile_app/screens/wishlist/wishlist_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -92,6 +92,9 @@ class _MyAppState extends State<MyApp> {
               ChangeNotifierProvider(
                 create: (_) => ViewedProductProvider(),
               ),
+              ChangeNotifierProvider(
+                create: (_) => FoodBowlProvider(),
+              ),
             ],
             child: Consumer<DarkThemeProvider>(
                 builder: (context, themeProvider, child) {
@@ -99,12 +102,11 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   title: 'Flutter Demo',
                   theme: Styles.themeData(themeProvider.getDarkTheme, context),
-                  home: const BottomBarScreen(),
+                  home: const FetchScreen(),
                   routes: {
-                    OnSaleScreen.routeName: (ctx) => const OnSaleScreen(),
+                    FeedUsScreen.routeName: (ctx) => const FeedUsScreen(),
                     FeedScreen.routeName: (ctx) => const FeedScreen(),
-                    ProductDetails.routeName: (ctx) => const ProductDetails(),
-                    WishlistScreen.routeName: (ctx) => const WishlistScreen(),
+                    FoodBowlDetail.routeName: (ctx) => const FoodBowlDetail(),
                     OrderScreen.routeName: (ctx) => const OrderScreen(),
                     ViewedScreen.routeName: (ctx) => const ViewedScreen(),
                     CategoryScreen.routeName: (ctx) => const CategoryScreen(),
