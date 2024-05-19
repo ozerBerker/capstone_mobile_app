@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/provider/dark_theme_provider.dart';
+import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
-import 'package:mobile_app/screens/wallet/wallet_screen.dart';
+import 'package:mobile_app/screens/wallet_screen.dart';
 import 'package:mobile_app/screens/categories.screen.dart';
 import 'package:mobile_app/screens/home.screen.dart';
 import 'package:mobile_app/screens/profile.screen.dart';
-import 'package:mobile_app/screens/wallet/shopping_cart.screen.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';

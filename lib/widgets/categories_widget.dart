@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/inner_screens/category_screen.dart';
-import 'package:mobile_app/provider/dark_theme_provider.dart';
+import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 

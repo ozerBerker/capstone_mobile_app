@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/consts.dart';
 import 'package:mobile_app/models/foodBowl_model.dart';
-import 'package:mobile_app/models/products_model.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
-import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/feed_items.dart';
@@ -98,7 +96,7 @@ class _FeedScreenState extends State<FeedScreen> {
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
-              childAspectRatio: size.width / (size.height * 0.6),
+              childAspectRatio: size.width / (size.height * 0.75),
               children: List.generate(allFoodBowls.length, (index) {
                 return ChangeNotifierProvider.value(
                     value: allFoodBowls[index], child: FeedsWidget());

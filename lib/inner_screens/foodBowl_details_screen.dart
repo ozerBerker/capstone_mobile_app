@@ -1,21 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
+import 'package:mobile_app/inner_screens/donation_screen.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
-import 'package:mobile_app/providers/products_provider.dart';
-import 'package:mobile_app/providers/viewed_provider.dart';
-import 'package:mobile_app/providers/wishlist_provider.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/hearth_btn.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class FoodBowlDetail extends StatefulWidget {
   static const routeName = '/FoodBowlDetail';
@@ -30,9 +29,39 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
   final _quantityTextController = TextEditingController(text: '1');
 
   @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _quantityTextController.dispose();
     super.dispose();
+  }
+
+  double? userWallet;
+  final User? user = authInstance.currentUser;
+  Future<void> getUserData() async {
+    if (user == null) {
+      return;
+    }
+    try {
+      setState(() async {
+        String _uid = user!.uid;
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_uid)
+            .get();
+        if (userDoc == null) {
+          return;
+        } else {
+          userWallet = userDoc.get('userWallet').toDouble();
+        }
+      });
+    } catch (error) {
+      GlobalMethods.errorDialog(subtitle: '$error', context: context);
+    } finally {}
   }
 
   @override
@@ -48,7 +77,8 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
 
     final getCurrFoodBowl = foodBowlProvider.findProductById(foodBowlId);
 
-    final totalPrice = 0;
+    double totalPrice =
+        getCurrFoodBowl.price * int.parse(_quantityTextController.text);
 
     return PopScope(
       child: Scaffold(
@@ -112,13 +142,13 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                           children: [
                             TextWidget(
                               text:
-                                  '\$${getCurrFoodBowl.price.toStringAsFixed(2)}',
+                                  '\₺${getCurrFoodBowl.price.toStringAsFixed(2)}',
                               color: color,
                               textSize: 22,
                               isTitle: true,
                             ),
                             TextWidget(
-                              text: 'KG',
+                              text: ' per slot',
                               color: color,
                               textSize: 12,
                               isTitle: false,
@@ -255,14 +285,14 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                                     children: [
                                       TextWidget(
                                         text:
-                                            '\$${totalPrice.toStringAsFixed(2)}/',
+                                            '₺${totalPrice.toStringAsFixed(2)} | ',
                                         color: color,
                                         textSize: 20,
                                         isTitle: true,
                                       ),
                                       TextWidget(
                                         text:
-                                            '${_quantityTextController.text}KG',
+                                            '${_quantityTextController.text} ~ Slot',
                                         color: color,
                                         textSize: 16,
                                         isTitle: false,
@@ -280,8 +310,51 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                               color: Colors.green,
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
-                                onTap: () {
-                                  final User? user = authInstance.currentUser;
+                                onTap: () async {
+                                  var donationStatus = false;
+                                  if (userWallet! >= totalPrice) {
+                                    donationStatus = true;
+                                  }
+
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => DonationScreen(
+                                      donationStatus: donationStatus,
+                                      foodBowl: getCurrFoodBowl,
+                                    ),
+                                  ));
+                                  // User? user = authInstance.currentUser;
+                                  // final orderId = const Uuid().v4();
+                                  // try {
+                                  //   await FirebaseFirestore.instance
+                                  //       .collection('orders')
+                                  //       .doc(orderId)
+                                  //       .set({
+                                  //     'orderId': orderId,
+                                  //     'userId': user!.uid,
+                                  //     'foodBowlId': getCurrFoodBowl.id,
+                                  //     'userName': user.displayName,
+                                  //     'userEmail': user.email,
+                                  //     'price': getCurrFoodBowl.price,
+                                  //     'containerSlot':
+                                  //         getCurrFoodBowl.containerSlot,
+                                  //     'imageUrl': getCurrFoodBowl.imageUrl,
+                                  //     'orderDate': Timestamp.now(),
+                                  //   });
+                                  //   Fluttertoast.showToast(
+                                  //     msg: "Your order has been placed",
+                                  //     toastLength: Toast.LENGTH_LONG,
+                                  //     gravity: ToastGravity.CENTER,
+                                  //     // timeInSecForIosWeb: 1,
+                                  //     // backgroundColor: Colors.grey.shade600,
+                                  //     // textColor: Colors.white,
+                                  //     // fontSize: 16.0,
+                                  //   );
+                                  // } catch (err) {
+                                  //   GlobalMethods.errorDialog(
+                                  //       subtitle: err.toString(),
+                                  //       context: context);
+                                  // } finally {}
                                 },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(

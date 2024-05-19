@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/dark_theme_provider.dart';
+import '../providers/dark_theme_provider.dart';
 
 class Utils {
   BuildContext context;

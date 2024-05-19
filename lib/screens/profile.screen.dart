@@ -5,12 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
-import 'package:mobile_app/provider/dark_theme_provider.dart';
+import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/screens/orders/order_screen.dart';
-import 'package:mobile_app/screens/viewed/viewed_screen.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
@@ -157,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: 'Forgot Password',
                 icon: IconlyLight.unlock,
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ForgotPasswordScreen(),
                   ));
                 },

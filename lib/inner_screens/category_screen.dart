@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/consts.dart';
-import 'package:mobile_app/models/products_model.dart';
-import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/empty_products_widget.dart';
@@ -38,10 +36,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     final categoryName = ModalRoute.of(context)!.settings.arguments as String;
 
-    final productProviders = Provider.of<ProductsProvider>(context);
-    List<ProductModel> productsByCategories =
-        productProviders.FindByCategory(categoryName);
-
     return Scaffold(
       appBar: AppBar(
         leading: BackWidget(),
@@ -55,7 +49,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           isTitle: true,
         ),
       ),
-      body: productsByCategories.isEmpty
+      body: false // productsByCategories.isEmpty
           ? const EmptyProductWidget(
               text: 'No products belong to this category',
             )
@@ -99,19 +93,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                   GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    padding: EdgeInsets.zero,
-                    // crossAxisSpacing: 10,
-                    childAspectRatio: size.width / (size.height * 0.6),
-                    children:
-                        List.generate(productsByCategories.length, (index) {
-                      return ChangeNotifierProvider.value(
-                          value: productsByCategories[index],
-                          child: FeedsWidget());
-                    }),
-                  )
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      padding: EdgeInsets.zero,
+                      // crossAxisSpacing: 10,
+                      childAspectRatio: size.width / (size.height * 0.6),
+                      children: []
+                      //     List.generate(6/* productsByCategories.length */, (index) {
+                      //   return ChangeNotifierProvider.value(
+                      //       value: /* productsByCategories */[index],
+                      //       child: FeedsWidget());
+                      // }),
+                      )
                 ],
               ),
             ),

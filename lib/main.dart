@@ -8,17 +8,14 @@ import 'package:mobile_app/inner_screens/category_screen.dart';
 import 'package:mobile_app/inner_screens/feed_screen.dart';
 import 'package:mobile_app/inner_screens/feed_us_screen.dart';
 import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
-import 'package:mobile_app/provider/dark_theme_provider.dart';
+import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
-import 'package:mobile_app/providers/products_provider.dart';
-import 'package:mobile_app/providers/viewed_provider.dart';
-import 'package:mobile_app/providers/wishlist_provider.dart';
+import 'package:mobile_app/providers/orders_provider.dart';
 import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/auth/register.dart';
 import 'package:mobile_app/screens/orders/order_screen.dart';
-import 'package:mobile_app/screens/viewed/viewed_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -60,6 +57,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
@@ -68,6 +66,7 @@ class _MyAppState extends State<MyApp> {
             );
           } else if (snapshot.hasError) {
             const MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: Scaffold(
                 body: Center(
                   child: Text('An Error Occured'),
@@ -81,19 +80,13 @@ class _MyAppState extends State<MyApp> {
                 return themeChangeProvider;
               }),
               ChangeNotifierProvider(
-                create: (_) => ProductsProvider(),
+                create: (_) => FoodBowlProvider(),
               ),
               ChangeNotifierProvider(
                 create: (_) => CartProvider(),
               ),
               ChangeNotifierProvider(
-                create: (_) => WishlistProvider(),
-              ),
-              ChangeNotifierProvider(
-                create: (_) => ViewedProductProvider(),
-              ),
-              ChangeNotifierProvider(
-                create: (_) => FoodBowlProvider(),
+                create: (_) => OrdersProvider(),
               ),
             ],
             child: Consumer<DarkThemeProvider>(
@@ -108,7 +101,6 @@ class _MyAppState extends State<MyApp> {
                     FeedScreen.routeName: (ctx) => const FeedScreen(),
                     FoodBowlDetail.routeName: (ctx) => const FoodBowlDetail(),
                     OrderScreen.routeName: (ctx) => const OrderScreen(),
-                    ViewedScreen.routeName: (ctx) => const ViewedScreen(),
                     CategoryScreen.routeName: (ctx) => const CategoryScreen(),
                     LoginScreen.routeName: (ctx) => const LoginScreen(),
                     RegisterScreen.routeName: (ctx) => const RegisterScreen(),

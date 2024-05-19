@@ -1,93 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobile_app/inner_screens/feed_screen.dart';
 import 'package:mobile_app/services/global_methods.dart';
-import 'package:mobile_app/services/utils.dart';
+import 'package:mobile_app/widgets/button_widget.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
+
+import '../services/utils.dart';
 
 class EmptyScreen extends StatelessWidget {
   const EmptyScreen(
-      {super.key,
+      {Key? key,
       required this.imagePath,
       required this.title,
       required this.subtitle,
-      required this.buttonText});
+      required this.buttonText,
+      required this.primary,
+      required this.fct})
+      : super(key: key);
+
   final String imagePath, title, subtitle, buttonText;
+  final Color primary;
+  final Function fct;
 
   @override
   Widget build(BuildContext context) {
-    final Utils utils = Utils(context);
-    final themeState = utils.getTheme;
-    Size size = utils.getScreenSize;
-    Color color = utils.color;
-
+    final Color color = Utils(context).color;
+    final themeState = Utils(context).getTheme;
+    Size size = Utils(context).getScreenSize;
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Image.asset(
-              imagePath,
-              width: double.infinity,
-              height: size.height * 0.4,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              'Whoops!',
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 40,
-                fontWeight: FontWeight.w700,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextWidget(
-              text: title,
-              color: Colors.cyan,
-              textSize: 22,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextWidget(text: subtitle, color: Colors.cyan, textSize: 20),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    side: BorderSide(
-                      color: color,
-                    ),
-                  ),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              Image.asset(
+                imagePath,
+                width: double.infinity,
+                height: size.height * 0.4,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
                 ),
-                onPressed: () {
-                  GlobalMethods.navigateTo(
-                      ctx: context, routeName: FeedScreen.routeName);
-                },
-                child: TextWidget(
-                  text: buttonText,
-                  color:
-                      themeState ? Colors.grey.shade300 : Colors.grey.shade800,
-                  textSize: 20,
-                  isTitle: true,
-                ))
-          ],
-        ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: size.height * 0.1,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: size.height * 0.09,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(112.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      fct();
+                    },
+                    child: TextWidget(
+                        text: buttonText, color: Colors.white, textSize: 24),
+                  ),
+                ),
+              ),
+            ]),
       )),
     );
   }

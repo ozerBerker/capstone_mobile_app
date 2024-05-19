@@ -1,5 +1,3 @@
-import 'package:mobile_app/models/products_model.dart';
-
 class Consts {
   static final List<String> offerImages = [
     'assets/images/offres/Offer1.jpg',

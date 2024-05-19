@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   TextButton(
                     onPressed: () {
                       GlobalMethods.navigateTo(
-                          ctx: context, routeName: FeedUsScreen.routeName);
+                          ctx: context, routeName: FeedScreen.routeName);
                     },
                     child: TextWidget(
                       text: 'Browse all',

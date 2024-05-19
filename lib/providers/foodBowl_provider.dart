@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/foodBowl_model.dart';
 
 class FoodBowlProvider with ChangeNotifier {
-  static final List<FoodBowlModel> _foodBowlsList = [];
+  static List<FoodBowlModel> _foodBowlsList = [];
 
   List<FoodBowlModel> get getFoodBowls {
     return _foodBowlsList;
@@ -14,6 +14,7 @@ class FoodBowlProvider with ChangeNotifier {
         .collection('foodBowls')
         .get()
         .then((QuerySnapshot foodBowlSnapshot) {
+      _foodBowlsList.clear();
       foodBowlSnapshot.docs.forEach((element) {
         _foodBowlsList.insert(
             0,

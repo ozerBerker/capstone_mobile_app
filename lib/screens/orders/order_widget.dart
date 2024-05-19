@@ -19,7 +19,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     Size size = utils.getScreenSize;
     Color color = utils.color;
     return ListTile(
-      subtitle: const Text('Paid: \$12.8'),
+      subtitle: const Text('Paid: ₺12.8'),
       onTap: () {
         GlobalMethods.navigateTo(
             ctx: context, routeName: FoodBowlDetail.routeName);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/fetch_screen.dart';
+import 'package:mobile_app/inner_screens/feed_screen.dart';
 import 'package:mobile_app/screens/orders/order_widget.dart';
+import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/empty_screen.dart';
@@ -17,11 +20,18 @@ class OrderScreen extends StatelessWidget {
     bool _isEmpty = true;
 
     if (_isEmpty == true) {
-      return const EmptyScreen(
-        title: 'Your did not place any order yet',
-        subtitle: 'Order something and make me happy :)',
+      return EmptyScreen(
+        title: 'Whoops!',
+        subtitle:
+            'You didnt place any order yet\nOrder something and make me happy :)',
         buttonText: 'Shop now',
         imagePath: 'assets/images/cart.png',
+        primary: Colors.blue,
+        fct: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const FetchScreen(),
+          ));
+        },
       );
     } else {
       return Scaffold(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/foodBowl_model.dart';
-import 'package:mobile_app/models/products_model.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
-import 'package:mobile_app/providers/products_provider.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/back_widget.dart';
 import 'package:mobile_app/widgets/empty_products_widget.dart';
@@ -23,7 +21,7 @@ class FeedUsScreen extends StatelessWidget {
     Color color = utils.color;
 
     final foodBowlProvider = Provider.of<FoodBowlProvider>(context);
-    List<FoodBowlModel> onSaleProducts = foodBowlProvider.getFoodBowls;
+    List<FoodBowlModel> emptyFoodBowl = foodBowlProvider.getFoodBowls;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +35,7 @@ class FeedUsScreen extends StatelessWidget {
           isTitle: true,
         ),
       ),
-      body: onSaleProducts.isEmpty
+      body: emptyFoodBowl.isEmpty
           ? const EmptyProductWidget(
               text: 'No product on sale yet!\nStay tuned',
             )
@@ -46,9 +44,9 @@ class FeedUsScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
               childAspectRatio: size.width / (size.height * 0.75),
-              children: List.generate(onSaleProducts.length, (index) {
+              children: List.generate(emptyFoodBowl.length, (index) {
                 return ChangeNotifierProvider.value(
-                  value: onSaleProducts[index],
+                  value: emptyFoodBowl[index],
                   child: const FeedUsWidget(),
                 );
               }),
