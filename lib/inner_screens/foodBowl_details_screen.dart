@@ -100,7 +100,8 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
             Flexible(
               flex: 2,
               child: FancyShimmerImage(
-                imageUrl: getCurrFoodBowl.imageUrl,
+                // imageUrl: getCurrFoodBowl.imageUrl,
+                imageUrl: 'assets/images/card-image-5.png',
                 boxFit: BoxFit.fill,
                 width: size.width,
               ),
@@ -168,7 +169,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                               child: Row(
                                 children: [
                                   TextWidget(
-                                    text: 'Feed Us',
+                                    text: getCurrFoodBowl.bowlLevel,
                                     color: Colors.white,
                                     textSize: 20,
                                     isTitle: true,

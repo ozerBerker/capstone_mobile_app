@@ -21,7 +21,8 @@ class FeedUsScreen extends StatelessWidget {
     Color color = utils.color;
 
     final foodBowlProvider = Provider.of<FoodBowlProvider>(context);
-    List<FoodBowlModel> emptyFoodBowl = foodBowlProvider.getFoodBowls;
+    List<FoodBowlModel> emptyFoodBowl =
+        foodBowlProvider.getFoodBowlsByLevel("Empty");
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +30,7 @@ class FeedUsScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: TextWidget(
-          text: 'Products on sale',
+          text: 'Empty Food Bowls',
           color: color,
           textSize: 24,
           isTitle: true,
@@ -37,7 +38,7 @@ class FeedUsScreen extends StatelessWidget {
       ),
       body: emptyFoodBowl.isEmpty
           ? const EmptyProductWidget(
-              text: 'No product on sale yet!\nStay tuned',
+              text: 'No Empty Food Bowls yet!\nStay tuned',
             )
           : GridView.count(
               crossAxisCount: 2,

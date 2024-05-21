@@ -23,8 +23,8 @@ class OrderScreen extends StatelessWidget {
       return EmptyScreen(
         title: 'Whoops!',
         subtitle:
-            'You didnt place any order yet\nOrder something and make me happy :)',
-        buttonText: 'Shop now',
+            'You didnt place any order yet\nOrder & make our furry friends happy :)',
+        buttonText: 'Donate Now',
         imagePath: 'assets/images/cart.png',
         primary: Colors.blue,
         fct: () {

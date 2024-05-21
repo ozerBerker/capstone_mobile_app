@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:card_swiper/card_swiper.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            //Add Banner
+            Image.asset(Consts.banner),
           ],
         ),
       ),

@@ -27,7 +27,8 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
         padding: const EdgeInsets.only(left: 25.0, bottom: 15),
         child: Material(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.grey.shade200,
+          // color: Colors.grey.shade200,
+          color: Color(0xff1C4189),
           child: InkWell(
             onTap: () {
               // GlobalMethods()
@@ -48,7 +49,7 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
                 ),
                 TextWidget(
                   text: foodBowlModel.location,
-                  color: color,
+                  color: Colors.white,
                   textSize: 22,
                   isTitle: true,
                 ),
@@ -58,13 +59,13 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
                   children: [
                     TextWidget(
                       text: 'Bowl: ',
-                      color: color,
+                      color: Colors.white,
                       textSize: 14,
                       isTitle: true,
                     ),
                     TextWidget(
                         text: foodBowlModel.bowlLevel,
-                        color: color,
+                        color: Colors.white,
                         textSize: 14),
                   ],
                 ),
@@ -77,13 +78,13 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
                   children: [
                     TextWidget(
                       text: 'Container: ',
-                      color: color,
+                      color: Colors.white,
                       textSize: 14,
                       isTitle: true,
                     ),
                     TextWidget(
                         text: foodBowlModel.containerSlot.toString(),
-                        color: color,
+                        color: Colors.white,
                         textSize: 14),
                   ],
                 ),
@@ -97,7 +98,7 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(size.width * 0.3, size.height * 0.05),
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Color(0xffFF914D),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

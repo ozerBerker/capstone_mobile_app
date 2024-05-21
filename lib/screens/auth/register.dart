@@ -308,9 +308,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 10,
                     ),
                     ButtonWidget(
-                        fct: _submitFormOnRegister, buttonText: 'Sign up'),
+                      fct: _submitFormOnRegister,
+                      buttonText: 'Sign up',
+                      primary: Color(0xff045071),
+                    ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     RichText(
                         text: TextSpan(
@@ -323,7 +326,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               style: const TextStyle(
                                   color: Color(0xff6B7891),
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w600),
+                                  fontWeight: FontWeight.w900),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.pushReplacementNamed(

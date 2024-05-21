@@ -7,11 +7,11 @@ class GoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.blue,
+      color: Colors.white,
       child: InkWell(
         onTap: () {},
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               color: Colors.white,
@@ -20,11 +20,6 @@ class GoogleButton extends StatelessWidget {
                 width: 40.0,
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
-            TextWidget(
-                text: 'Sign in with google', color: Colors.white, textSize: 18),
           ],
         ),
       ),

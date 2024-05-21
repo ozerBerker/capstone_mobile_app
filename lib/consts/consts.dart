@@ -1,9 +1,9 @@
 class Consts {
   static final List<String> offerImages = [
-    'assets/images/offres/Offer1.jpg',
-    'assets/images/offres/Offer2.jpg',
-    'assets/images/offres/Offer3.jpg',
-    'assets/images/offres/Offer4.jpg'
+    'assets/images/offers/Offer1.png',
+    'assets/images/offers/Offer2.png',
+    'assets/images/offers/Offer3.png',
+    'assets/images/offers/Offer4.png'
   ];
 
   static List<String> authImagesPaths = [
@@ -15,4 +15,6 @@ class Consts {
     'assets/images/landing/store.jpg',
     'assets/images/landing/vergtablebg.jpg',
   ];
+
+  static final banner = 'assets/images/banner.png';
 }
