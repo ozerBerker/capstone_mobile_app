@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/inner_screens/foodBowl_details_screen.dart';
+import 'package:mobile_app/models/orders_model.dart';
+import 'package:mobile_app/providers/foodBowl_provider.dart';
+import 'package:mobile_app/providers/orders_provider.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
 class OrderWidget extends StatefulWidget {
   const OrderWidget({super.key});
@@ -13,24 +18,40 @@ class OrderWidget extends StatefulWidget {
 }
 
 class _OrderWidgetState extends State<OrderWidget> {
+  String orderDateToShow(Timestamp date) {
+    var orderDate = date.toDate();
+    return '${orderDate.day}/${orderDate.month}/${orderDate.year}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ordersModel = Provider.of<OrdersModel>(context);
+
+    final foodBowlProvider = Provider.of<FoodBowlProvider>(context);
+    final getCurrFoodBowl =
+        foodBowlProvider.findFoodBowlById(ordersModel.foodBowlId);
+
     final Utils utils = Utils(context);
     Size size = utils.getScreenSize;
     Color color = utils.color;
+
     return ListTile(
-      subtitle: const Text('Paid: ₺12.8'),
+      subtitle: Text('Paid: ₺${ordersModel.price.toStringAsFixed(2)}'),
       onTap: () {
         GlobalMethods.navigateTo(
             ctx: context, routeName: FoodBowlDetail.routeName);
       },
       leading: FancyShimmerImage(
         width: size.width * 0.2,
-        imageUrl: 'https://i.ibb.co/F0s3FHQ/Apricots.png',
+        imageUrl: ordersModel.imageUrl,
         boxFit: BoxFit.fill,
       ),
-      title: TextWidget(text: 'Title x12', color: color, textSize: 18),
-      trailing: TextWidget(text: '03/05/2024', color: color, textSize: 18),
+      title: TextWidget(
+          text: getCurrFoodBowl.location, color: color, textSize: 18),
+      trailing: TextWidget(
+          text: orderDateToShow(ordersModel.orderDate),
+          color: color,
+          textSize: 18),
     );
   }
 }

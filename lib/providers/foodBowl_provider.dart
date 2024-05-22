@@ -44,7 +44,7 @@ class FoodBowlProvider with ChangeNotifier {
         .toList();
   }
 
-  FoodBowlModel findProductById(String foodBowlId) {
+  FoodBowlModel findFoodBowlById(String foodBowlId) {
     return _foodBowlsList.firstWhere((element) => element.id == foodBowlId);
   }
 }

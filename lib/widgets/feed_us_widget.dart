@@ -28,11 +28,9 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
         child: Material(
           borderRadius: BorderRadius.circular(12),
           // color: Colors.grey.shade200,
-          color: Color(0xff1C4189),
+          color: Color(0xff1C4189).withOpacity(0.8),
           child: InkWell(
             onTap: () {
-              // GlobalMethods()
-              //     .navigateTo(ctx: context, routeName: ProductDetails.routeName);
               Navigator.pushNamed(context, FoodBowlDetail.routeName,
                   arguments: foodBowlModel.id);
             },
@@ -98,7 +96,7 @@ class _FeedUsWidgetState extends State<FeedUsWidget> {
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(size.width * 0.3, size.height * 0.05),
-                      backgroundColor: Color(0xffFF914D),
+                      backgroundColor: Color(0xffFF914D).withOpacity(0.9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

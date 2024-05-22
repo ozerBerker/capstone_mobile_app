@@ -12,6 +12,7 @@ import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/providers/orders_provider.dart';
+import 'package:mobile_app/providers/transaction_provider.dart';
 import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/auth/register.dart';
@@ -87,6 +88,9 @@ class _MyAppState extends State<MyApp> {
               ),
               ChangeNotifierProvider(
                 create: (_) => OrdersProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => TransactionProvider(),
               ),
             ],
             child: Consumer<DarkThemeProvider>(

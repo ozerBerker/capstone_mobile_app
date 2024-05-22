@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mobile_app/consts/consts.dart';
-import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/screens/bottom_bar.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +13,7 @@ class FetchScreen extends StatefulWidget {
 }
 
 class _FetchScreenState extends State<FetchScreen> {
-  List<String> images = Consts.authImagesPaths;
+  List<String> images = Consts.loadingImages;
   @override
   void initState() {
     images.shuffle();
@@ -28,6 +26,7 @@ class _FetchScreenState extends State<FetchScreen> {
       final foodBowlProvider =
           Provider.of<FoodBowlProvider>(context, listen: false);
       await foodBowlProvider.fetchFoodBowls();
+
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => BottomBarScreen()));
     });

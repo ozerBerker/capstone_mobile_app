@@ -1,15 +1,10 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mobile_app/consts/consts.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/fetch_screen.dart';
 import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/register.dart';
-import 'package:mobile_app/screens/bottom_bar.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/widgets/button_widget.dart';

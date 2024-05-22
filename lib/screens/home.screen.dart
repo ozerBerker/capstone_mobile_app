@@ -1,11 +1,7 @@
 import 'dart:math';
 
 import 'package:card_swiper/card_swiper.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:mobile_app/consts/consts.dart';
 import 'package:mobile_app/inner_screens/feed_screen.dart';
 import 'package:mobile_app/inner_screens/feed_us_screen.dart';
@@ -13,7 +9,6 @@ import 'package:mobile_app/models/foodBowl_model.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/feed_items.dart';
 import 'package:mobile_app/widgets/feed_us_widget.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 pagination: const SwiperPagination(
                     alignment: Alignment.bottomCenter,
                     builder: DotSwiperPaginationBuilder(
-                        color: Colors.white, activeColor: Colors.red)),
+                        color: Color(0xff1C4189),
+                        activeColor: Color(0xffFF914D))),
                 // control: const SwiperControl(color: Colors.black),
               ),
             ),

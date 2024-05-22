@@ -40,7 +40,8 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
     super.dispose();
   }
 
-  double? userWallet;
+  late double totalPrice;
+  double? _userWallet;
   final User? user = authInstance.currentUser;
   Future<void> getUserData() async {
     if (user == null) {
@@ -56,7 +57,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
         if (userDoc == null) {
           return;
         } else {
-          userWallet = userDoc.get('userWallet').toDouble();
+          _userWallet = userDoc.get('userWallet').toDouble();
         }
       });
     } catch (error) {
@@ -75,9 +76,9 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
 
     final foodBowlId = ModalRoute.of(context)!.settings.arguments as String;
 
-    final getCurrFoodBowl = foodBowlProvider.findProductById(foodBowlId);
+    final getCurrFoodBowl = foodBowlProvider.findFoodBowlById(foodBowlId);
 
-    double totalPrice =
+    totalPrice =
         getCurrFoodBowl.price * int.parse(_quantityTextController.text);
 
     return PopScope(
@@ -313,8 +314,10 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                               child: InkWell(
                                 onTap: () async {
                                   var donationStatus = false;
-                                  if (userWallet! >= totalPrice) {
+                                  if (_userWallet! >= totalPrice) {
                                     donationStatus = true;
+
+                                    updateWallet();
                                   }
 
                                   Navigator.of(context)
@@ -407,5 +410,38 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
         ),
       ),
     );
+  }
+
+  Future<String?> makeTransaction() async {
+    final transactionId = const Uuid().v4();
+    try {
+      await FirebaseFirestore.instance
+          .collection('transaction')
+          .doc(transactionId)
+          .set({
+        'id': transactionId,
+        'orderId': "",
+        'oldAmount': _userWallet,
+        'processAmount': totalPrice,
+        'processDate': Timestamp.now(),
+        'isItInflow': false,
+      });
+      return transactionId;
+    } catch (error) {
+      GlobalMethods.errorDialog(subtitle: '$error', context: context);
+    }
+    return null;
+  }
+
+  Future<void> updateWallet() async {
+    String _uid = user!.uid;
+    double wallet = _userWallet! - totalPrice;
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(_uid).update({
+        'userWallet': wallet,
+      });
+    } catch (error) {
+      GlobalMethods.errorDialog(subtitle: '$error', context: context);
+    }
   }
 }

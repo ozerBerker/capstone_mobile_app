@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
+import 'package:mobile_app/providers/transaction_provider.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/balance_widget.dart';
+import 'package:mobile_app/widgets/transaction_widget.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -76,118 +77,126 @@ class _WalletScreenState extends State<WalletScreen> {
     final themeState = utils.getTheme;
     Size size = utils.getScreenSize;
     Color color = utils.color;
-    return LoadingManager(
-      isLoading: _isLoading,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  // badges.Badge(
-                  //   badgeContent: FittedBox(
-                  //       child: TextWidget(
-                  //           text: '100 tl', color: Colors.white, textSize: 15)),
-                  //   position: badges.BadgePosition.topEnd(
-                  //       top: size.width * 0.1, end: size.width * 0.1),
-                  //   badgeStyle: badges.BadgeStyle(
-                  //     shape: badges.BadgeShape.square,
-                  //     badgeColor: Colors.blue,
-                  //     borderRadius: BorderRadius.circular(8),
-                  //     borderSide: BorderSide(color: Colors.white, width: 2),
-                  //     elevation: 0,
-                  //   ),
-                  //   child: Image.asset(
-                  //     'assets/images/cart.png',
-                  //     width: double.infinity,
-                  //     height: size.height * 0.4,
-                  //   ),
-                  // ),
-                  Image.asset(
-                    'assets/images/wallet.png',
-                    width: double.infinity,
-                    height: size.height * 0.2,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextWidget(
-                    text: 'Balance',
-                    color: color,
-                    textSize: 20,
-                    isTitle: true,
-                  ),
-                  TextWidget(
-                      text: '${_userWallet ?? 'No User'}',
-                      color: color,
-                      textSize: 24),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: BorderSide.none),
-                        backgroundColor: const Color(0xff55AF87),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 20),
-                      ),
-                      onPressed: () {
-                        if (user == null) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+
+    return FutureBuilder(
+        future: transactionProvider.fetchTransactions(),
+        builder: (context, snapshot) {
+          return LoadingManager(
+            isLoading: _isLoading,
+            child: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        // badges.Badge(
+                        //   badgeContent: FittedBox(
+                        //       child: TextWidget(
+                        //           text: '100 tl', color: Colors.white, textSize: 15)),
+                        //   position: badges.BadgePosition.topEnd(
+                        //       top: size.width * 0.1, end: size.width * 0.1),
+                        //   badgeStyle: badges.BadgeStyle(
+                        //     shape: badges.BadgeShape.square,
+                        //     badgeColor: Colors.blue,
+                        //     borderRadius: BorderRadius.circular(8),
+                        //     borderSide: BorderSide(color: Colors.white, width: 2),
+                        //     elevation: 0,
+                        //   ),
+                        //   child: Image.asset(
+                        //     'assets/images/cart.png',
+                        //     width: double.infinity,
+                        //     height: size.height * 0.4,
+                        //   ),
+                        // ),
+                        Image.asset(
+                          'assets/images/wallet.png',
+                          width: double.infinity,
+                          height: size.height * 0.2,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextWidget(
+                          text: 'Balance',
+                          color: color,
+                          textSize: 20,
+                          isTitle: true,
+                        ),
+                        TextWidget(
+                            text: '${_userWallet ?? 'No User'}',
+                            color: color,
+                            textSize: 24),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  side: BorderSide.none),
+                              backgroundColor: const Color(0xff55AF87),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 20),
                             ),
-                          );
-                          return;
-                        }
-                        _loadBalanceToWallet(wallet: _userWallet ?? 0);
-                        addBalanceLog();
-                      },
-                      child: TextWidget(
-                        text: 'Load Money',
-                        color: Colors.white,
-                        textSize: 20,
-                        isTitle: true,
-                      ))
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            onPressed: () {
+                              if (user == null) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(),
+                                  ),
+                                );
+                                return;
+                              }
+                              loadMoneyToWallet(wallet: _userWallet ?? 0);
+                              makeTransaction();
+                            },
+                            child: TextWidget(
+                              text: 'Load Money',
+                              color: Colors.white,
+                              textSize: 20,
+                              isTitle: true,
+                            ))
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 10,
+                          itemBuilder: (ctx, index) {
+                            return Column(
+                              children: const [
+                                TransactionWidget(),
+                                Divider(
+                                  thickness: 3,
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                  ],
                 ),
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (ctx, index) {
-                      return Column(
-                        children: const [
-                          OrdersWidget(),
-                          Divider(
-                            thickness: 3,
-                          ),
-                        ],
-                      );
-                    }),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
-  Future<void> _loadBalanceToWallet({
+  Future<void> loadMoneyToWallet({
     required double wallet,
   }) async {
     await showDialog(
@@ -237,22 +246,22 @@ class _WalletScreenState extends State<WalletScreen> {
         });
   }
 
-  Future<void> addBalanceLog() async {
-    final _uuid = const Uuid().v4();
+  Future<void> makeTransaction() async {
+    final transactionId = const Uuid().v4();
     try {
-      await FirebaseFirestore.instance.collection('balanceLog').doc(_uuid).set({
-        'id': _uuid,
-        'createdAt': Timestamp.now(),
+      await FirebaseFirestore.instance
+          .collection('transaction')
+          .doc(transactionId)
+          .set({
+        'id': transactionId,
+        'orderId': "",
+        'oldAmount': _userWallet,
+        'processAmount': double.parse(_walletTextController.text),
+        'processDate': Timestamp.now(),
+        'isItInflow': true,
       });
     } catch (error) {
       GlobalMethods.errorDialog(subtitle: '$error', context: context);
-      setState(() {
-        _isLoading = false;
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 }

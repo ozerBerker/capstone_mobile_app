@@ -5,9 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/fetch_screen.dart';
 import 'package:mobile_app/models/foodBowl_model.dart';
-import 'package:mobile_app/providers/foodBowl_provider.dart';
-import 'package:mobile_app/screens/bottom_bar.dart';
-import 'package:mobile_app/screens/home.screen.dart';
+import 'package:mobile_app/providers/orders_provider.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/widgets/empty_screen.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +25,12 @@ class DonationScreen extends StatefulWidget {
 }
 
 class _DonationScreenState extends State<DonationScreen> {
+  final orderId = const Uuid().v4();
+
   Future<void> addOrders() async {
     User? user = authInstance.currentUser;
     final currFoodBowl = widget.foodBowl;
-    final orderId = const Uuid().v4();
+    final ordersProvider = Provider.of<OrdersProvider>(context, listen: false);
     try {
       await FirebaseFirestore.instance.collection('orders').doc(orderId).set({
         'orderId': orderId,
@@ -43,7 +43,8 @@ class _DonationScreenState extends State<DonationScreen> {
         'imageUrl': currFoodBowl.imageUrl,
         'orderDate': Timestamp.now(),
       });
-      Fluttertoast.showToast(
+      await ordersProvider.fetchOrders();
+      await Fluttertoast.showToast(
         msg: "Your order has been placed",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
@@ -56,6 +57,19 @@ class _DonationScreenState extends State<DonationScreen> {
       GlobalMethods.errorDialog(subtitle: err.toString(), context: context);
     } finally {}
   }
+
+  // Future<void> updateTransaction() async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('transaction')
+  //         .doc(widget.transactionId)
+  //         .update({
+  //       'orderId': orderId,
+  //     });
+  //   } catch (error) {
+  //     GlobalMethods.errorDialog(subtitle: '$error', context: context);
+  //   }
+  // }
 
   @override
   void initState() {

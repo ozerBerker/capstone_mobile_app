@@ -193,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                     return;
                   }
-                  GlobalMethods().warningDialog(
+                  GlobalMethods.warningDialog(
                       title: 'Sign out',
                       subtitle: 'Do you wanna sign out?',
                       fct: () async {

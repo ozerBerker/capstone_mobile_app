@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/consts/firebase_consts.dart';
+import 'package:mobile_app/models/foodBowl_model.dart';
 import 'package:mobile_app/models/orders_model.dart';
+import 'package:uuid/uuid.dart';
 
 class OrdersProvider with ChangeNotifier {
   static List<OrdersModel> _orders = [];
 
-  List<OrdersModel> get getOrderss {
+  List<OrdersModel> get getOrders {
     return _orders;
   }
 

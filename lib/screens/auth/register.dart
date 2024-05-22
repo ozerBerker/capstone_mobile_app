@@ -1,19 +1,14 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/consts/consts.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/fetch_screen.dart';
 import 'package:mobile_app/screens/auth/login.dart';
-import 'package:mobile_app/screens/bottom_bar.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/button_widget.dart';
-import 'package:mobile_app/widgets/google_auth_button.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
