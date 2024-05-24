@@ -18,11 +18,6 @@ class OrderWidget extends StatefulWidget {
 }
 
 class _OrderWidgetState extends State<OrderWidget> {
-  String orderDateToShow(Timestamp date) {
-    var orderDate = date.toDate();
-    return '${orderDate.day}/${orderDate.month}/${orderDate.year}';
-  }
-
   @override
   Widget build(BuildContext context) {
     final ordersModel = Provider.of<OrdersModel>(context);
@@ -49,7 +44,7 @@ class _OrderWidgetState extends State<OrderWidget> {
       title: TextWidget(
           text: getCurrFoodBowl.location, color: color, textSize: 18),
       trailing: TextWidget(
-          text: orderDateToShow(ordersModel.orderDate),
+          text: GlobalMethods.orderDateToShow(ordersModel.orderDate),
           color: color,
           textSize: 18),
     );

@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/inner_screens/donation_screen.dart';
+import 'package:mobile_app/models/foodBowl_model.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
 import 'package:mobile_app/providers/foodBowl_provider.dart';
+import 'package:mobile_app/providers/orders_provider.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
@@ -316,49 +318,18 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                                   var donationStatus = false;
                                   if (_userWallet! >= totalPrice) {
                                     donationStatus = true;
-
-                                    updateWallet();
+                                    await updateWallet();
+                                    String orderId = await addOrders(
+                                        getCurrFoodBowl: getCurrFoodBowl);
+                                    await makeTransaction(orderId: orderId);
                                   }
 
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(
                                     builder: (context) => DonationScreen(
                                       donationStatus: donationStatus,
-                                      foodBowl: getCurrFoodBowl,
                                     ),
                                   ));
-                                  // User? user = authInstance.currentUser;
-                                  // final orderId = const Uuid().v4();
-                                  // try {
-                                  //   await FirebaseFirestore.instance
-                                  //       .collection('orders')
-                                  //       .doc(orderId)
-                                  //       .set({
-                                  //     'orderId': orderId,
-                                  //     'userId': user!.uid,
-                                  //     'foodBowlId': getCurrFoodBowl.id,
-                                  //     'userName': user.displayName,
-                                  //     'userEmail': user.email,
-                                  //     'price': getCurrFoodBowl.price,
-                                  //     'containerSlot':
-                                  //         getCurrFoodBowl.containerSlot,
-                                  //     'imageUrl': getCurrFoodBowl.imageUrl,
-                                  //     'orderDate': Timestamp.now(),
-                                  //   });
-                                  //   Fluttertoast.showToast(
-                                  //     msg: "Your order has been placed",
-                                  //     toastLength: Toast.LENGTH_LONG,
-                                  //     gravity: ToastGravity.CENTER,
-                                  //     // timeInSecForIosWeb: 1,
-                                  //     // backgroundColor: Colors.grey.shade600,
-                                  //     // textColor: Colors.white,
-                                  //     // fontSize: 16.0,
-                                  //   );
-                                  // } catch (err) {
-                                  //   GlobalMethods.errorDialog(
-                                  //       subtitle: err.toString(),
-                                  //       context: context);
-                                  // } finally {}
                                 },
                                 borderRadius: BorderRadius.circular(10),
                                 child: Padding(
@@ -412,27 +383,6 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
     );
   }
 
-  Future<String?> makeTransaction() async {
-    final transactionId = const Uuid().v4();
-    try {
-      await FirebaseFirestore.instance
-          .collection('transaction')
-          .doc(transactionId)
-          .set({
-        'id': transactionId,
-        'orderId': "",
-        'oldAmount': _userWallet,
-        'processAmount': totalPrice,
-        'processDate': Timestamp.now(),
-        'isItInflow': false,
-      });
-      return transactionId;
-    } catch (error) {
-      GlobalMethods.errorDialog(subtitle: '$error', context: context);
-    }
-    return null;
-  }
-
   Future<void> updateWallet() async {
     String _uid = user!.uid;
     double wallet = _userWallet! - totalPrice;
@@ -442,6 +392,51 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
       });
     } catch (error) {
       GlobalMethods.errorDialog(subtitle: '$error', context: context);
+    }
+  }
+
+  Future<void> makeTransaction({required String orderId}) async {
+    final transactionId = const Uuid().v4();
+    try {
+      await FirebaseFirestore.instance
+          .collection('transaction')
+          .doc(transactionId)
+          .set({
+        'transactionId': transactionId,
+        'orderId': orderId,
+        'oldAmount': _userWallet,
+        'processAmount': totalPrice,
+        'processDate': Timestamp.now(),
+        'isItInflow': false,
+      });
+    } catch (error) {
+      GlobalMethods.errorDialog(subtitle: '$error', context: context);
+    }
+  }
+
+  Future<String> addOrders({required FoodBowlModel getCurrFoodBowl}) async {
+    User? user = authInstance.currentUser;
+    final currFoodBowl = getCurrFoodBowl;
+    final ordersProvider = Provider.of<OrdersProvider>(context, listen: false);
+
+    final orderId = const Uuid().v4();
+    try {
+      await FirebaseFirestore.instance.collection('orders').doc(orderId).set({
+        'orderId': orderId,
+        'userId': user!.uid,
+        'foodBowlId': currFoodBowl.id,
+        'userName': user.displayName,
+        'userEmail': user.email,
+        'price': currFoodBowl.price,
+        'containerSlot': currFoodBowl.containerSlot,
+        'imageUrl': currFoodBowl.imageUrl,
+        'orderDate': Timestamp.now(),
+      });
+      await ordersProvider.fetchOrders();
+    } catch (err) {
+      GlobalMethods.errorDialog(subtitle: err.toString(), context: context);
+    } finally {
+      return orderId;
     }
   }
 }

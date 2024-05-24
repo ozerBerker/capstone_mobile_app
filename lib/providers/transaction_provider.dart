@@ -27,6 +27,7 @@ class TransactionProvider with ChangeNotifier {
               isItInflow: element.get('isItInflow'),
             ));
       });
+      _transactions.sort((a, b) => b.processDate.compareTo(a.processDate));
     });
     notifyListeners();
   }

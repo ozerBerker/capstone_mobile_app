@@ -1,82 +1,49 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/fetch_screen.dart';
-import 'package:mobile_app/models/foodBowl_model.dart';
-import 'package:mobile_app/providers/orders_provider.dart';
-import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/widgets/empty_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DonationScreen extends StatefulWidget {
   const DonationScreen({
     super.key,
     required this.donationStatus,
-    required this.foodBowl,
   });
   final bool donationStatus;
-  final FoodBowlModel foodBowl;
 
   @override
   State<DonationScreen> createState() => _DonationScreenState();
 }
 
 class _DonationScreenState extends State<DonationScreen> {
-  final orderId = const Uuid().v4();
-
-  Future<void> addOrders() async {
-    User? user = authInstance.currentUser;
-    final currFoodBowl = widget.foodBowl;
-    final ordersProvider = Provider.of<OrdersProvider>(context, listen: false);
-    try {
-      await FirebaseFirestore.instance.collection('orders').doc(orderId).set({
-        'orderId': orderId,
-        'userId': user!.uid,
-        'foodBowlId': currFoodBowl.id,
-        'userName': user.displayName,
-        'userEmail': user.email,
-        'price': currFoodBowl.price,
-        'containerSlot': currFoodBowl.containerSlot,
-        'imageUrl': currFoodBowl.imageUrl,
-        'orderDate': Timestamp.now(),
-      });
-      await ordersProvider.fetchOrders();
-      await Fluttertoast.showToast(
-        msg: "Your order has been placed",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        // timeInSecForIosWeb: 1,
-        // backgroundColor: Colors.grey.shade600,
-        // textColor: Colors.white,
-        // fontSize: 16.0,
-      );
-    } catch (err) {
-      GlobalMethods.errorDialog(subtitle: err.toString(), context: context);
-    } finally {}
-  }
-
-  // Future<void> updateTransaction() async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection('transaction')
-  //         .doc(widget.transactionId)
-  //         .update({
-  //       'orderId': orderId,
-  //     });
-  //   } catch (error) {
-  //     GlobalMethods.errorDialog(subtitle: '$error', context: context);
-  //   }
-  // }
-
   @override
   void initState() {
     if (widget.donationStatus) {
-      addOrders();
+      sendDonationToFoodBowl();
     }
     super.initState();
+  }
+
+  Future<void> sendDonationToFoodBowl() async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child('foodBowls');
+
+    String recordKey =
+        '6f3db20d-cba9-4c09-aea5-ead3ffdd7625'; // Replace with your record key
+
+    databaseReference.child(recordKey).update({
+      'rmnFood': 4,
+    });
+
+    await Fluttertoast.showToast(
+      msg: "Your order has been placed",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      // timeInSecForIosWeb: 1,
+      // backgroundColor: Colors.grey.shade600,
+      // textColor: Colors.white,
+      // fontSize: 16.0,
+    );
   }
 
   @override

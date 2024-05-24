@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
@@ -6,6 +7,11 @@ class GlobalMethods {
   static void navigateTo(
       {required BuildContext ctx, required String routeName}) {
     Navigator.pushNamed(ctx, routeName);
+  }
+
+  static String orderDateToShow(Timestamp date) {
+    var orderDate = date.toDate();
+    return '${orderDate.day}/${orderDate.month}/${orderDate.year}';
   }
 
   static Future<void> warningDialog({

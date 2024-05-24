@@ -8,7 +8,7 @@ import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/services/utils.dart';
-import 'package:mobile_app/widgets/transaction_widget.dart';
+import 'package:mobile_app/screens/wallet/transaction_widget.dart';
 import 'package:mobile_app/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -79,6 +79,7 @@ class _WalletScreenState extends State<WalletScreen> {
     Color color = utils.color;
 
     final transactionProvider = Provider.of<TransactionProvider>(context);
+    final transactionList = transactionProvider.getTransactions;
 
     return FutureBuilder(
         future: transactionProvider.fetchTransactions(),
@@ -146,7 +147,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 20),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (user == null) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -155,8 +156,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                 );
                                 return;
                               }
-                              loadMoneyToWallet(wallet: _userWallet ?? 0);
-                              makeTransaction();
+                              await loadMoneyToWallet(wallet: _userWallet ?? 0);
+                              await makeTransaction();
                             },
                             child: TextWidget(
                               text: 'Load Money',
@@ -166,28 +167,58 @@ class _WalletScreenState extends State<WalletScreen> {
                             ))
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          itemBuilder: (ctx, index) {
-                            return Column(
-                              children: const [
-                                TransactionWidget(),
-                                Divider(
-                                  thickness: 3,
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
+                    transactionList.isEmpty
+                        ? Container(
+                            child: TextWidget(
+                                text: 'Boş', color: color, textSize: 22),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child:
+                                // ListView.separated(
+                                //   itemCount: transactionList.length,
+                                //   itemBuilder: (ctx, index) {
+                                //     return Padding(
+                                //       padding: EdgeInsets.symmetric(
+                                //           horizontal: 2, vertical: 6),
+                                //       child: ChangeNotifierProvider.value(
+                                //         value: transactionList[index],
+                                //         child: TransactionWidget(),
+                                //       ),
+                                //     );
+                                //   },
+                                //   separatorBuilder:
+                                //       (BuildContext context, int index) {
+                                //     return Divider(
+                                //       color: color,
+                                //       thickness: 1,
+                                //     );
+                                //   },
+                                // ),
+                                ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: transactionList.length,
+                                    itemBuilder: (ctx, index) {
+                                      return Column(
+                                        children: [
+                                          ChangeNotifierProvider.value(
+                                            value: transactionList[index],
+                                            child: const TransactionWidget(),
+                                          ),
+                                          Divider(
+                                            thickness: 3,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                          ),
                   ],
                 ),
               ),
@@ -237,7 +268,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   } catch (err) {
                     GlobalMethods.errorDialog(
                         subtitle: err.toString(), context: context);
-                  }
+                  } finally {}
                 },
                 child: const Text("Complete"),
               )
@@ -253,7 +284,7 @@ class _WalletScreenState extends State<WalletScreen> {
           .collection('transaction')
           .doc(transactionId)
           .set({
-        'id': transactionId,
+        'transactionId': transactionId,
         'orderId': "",
         'oldAmount': _userWallet,
         'processAmount': double.parse(_walletTextController.text),

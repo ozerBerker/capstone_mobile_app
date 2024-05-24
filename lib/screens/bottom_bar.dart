@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
-import 'package:mobile_app/screens/wallet_screen.dart';
+import 'package:mobile_app/screens/wallet/wallet_screen.dart';
 import 'package:mobile_app/screens/categories.screen.dart';
 import 'package:mobile_app/screens/home.screen.dart';
 import 'package:mobile_app/screens/profile.screen.dart';
