@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   title: 'Flutter Demo',
                   theme: Styles.themeData(themeProvider.getDarkTheme, context),
-                  home: const FetchScreen(),
+                  home: FetchScreen(),
                   routes: {
                     FeedUsScreen.routeName: (ctx) => const FeedUsScreen(),
                     FeedScreen.routeName: (ctx) => const FeedScreen(),

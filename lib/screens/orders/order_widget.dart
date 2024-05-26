@@ -36,11 +36,15 @@ class _OrderWidgetState extends State<OrderWidget> {
         GlobalMethods.navigateTo(
             ctx: context, routeName: FoodBowlDetail.routeName);
       },
-      leading: FancyShimmerImage(
+      leading: Image.asset(
+        'assets/images/bowl.png',
         width: size.width * 0.2,
-        imageUrl: ordersModel.imageUrl,
-        boxFit: BoxFit.fill,
       ),
+      // FancyShimmerImage(
+      //   width: size.width * 0.2,
+      //   imageUrl: 'assets/images/bowl.png',
+      //   boxFit: BoxFit.fill,
+      // ),
       title: TextWidget(
           text: getCurrFoodBowl.location, color: color, textSize: 18),
       trailing: TextWidget(

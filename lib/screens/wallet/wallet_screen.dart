@@ -168,9 +168,20 @@ class _WalletScreenState extends State<WalletScreen> {
                       ],
                     ),
                     transactionList.isEmpty
-                        ? Container(
-                            child: TextWidget(
-                                text: 'Boş', color: color, textSize: 22),
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.2,
+                              ),
+                              Container(
+                                child: TextWidget(
+                                    text: 'No Transaction Record',
+                                    color: color,
+                                    textSize: 22),
+                              ),
+                            ],
                           )
                         : Container(
                             padding: const EdgeInsets.all(12),
@@ -250,9 +261,9 @@ class _WalletScreenState extends State<WalletScreen> {
             actions: [
               TextButton(
                 onPressed: () async {
-                  // final total =
-                  //     wallet + double.parse(_walletTextController.text);
-                  final total = double.parse(_walletTextController.text);
+                  final total =
+                      wallet + double.parse(_walletTextController.text);
+                  // final total = double.parse(_walletTextController.text);
                   String _uid = user!.uid;
                   try {
                     await FirebaseFirestore.instance

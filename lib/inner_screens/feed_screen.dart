@@ -45,7 +45,7 @@ class _FeedScreenState extends State<FeedScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         centerTitle: true,
         title: TextWidget(
-          text: 'All Products',
+          text: 'All Food Bowls',
           color: color,
           textSize: 20,
           isTitle: true,
@@ -68,12 +68,12 @@ class _FeedScreenState extends State<FeedScreen> {
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1)),
+                              BorderSide(color: Color(0xff1C4189), width: 1)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1)),
-                      hintText: "What's in your mind",
+                              BorderSide(color: Color(0xff1C4189), width: 1)),
+                      hintText: "Look for bowls",
                       prefixIcon: Icon(Icons.search),
                       suffix: IconButton(
                         onPressed: () {
@@ -83,7 +83,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         icon: Icon(
                           Icons.close,
                           color: _searchTextFocusNode.hasFocus
-                              ? Colors.red
+                              ? Colors.black
                               : color,
                         ),
                       )),

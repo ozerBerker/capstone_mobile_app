@@ -34,6 +34,7 @@ class OrdersProvider with ChangeNotifier {
               orderDate: element.get('orderDate'),
             ));
       });
+      _orders.sort((a, b) => b.orderDate.compareTo(a.orderDate));
     });
     notifyListeners();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/providers/dark_theme_provider.dart';
 import 'package:mobile_app/providers/cart_prodivder.dart';
+import 'package:mobile_app/screens/map.screen.dart';
 import 'package:mobile_app/screens/wallet/wallet_screen.dart';
 import 'package:mobile_app/screens/categories.screen.dart';
 import 'package:mobile_app/screens/home.screen.dart';
@@ -21,7 +22,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   int _selectedIndex = 0;
   final List<Map<String, dynamic>> _pages = [
     {'page': const HomeScreen(), 'title': 'Home Screen'},
-    {'page': CategoriesScreen(), 'title': 'Categories Screen'},
+    {'page': MapScreen(), 'title': 'Categories Screen'},
     {'page': const WalletScreen(), 'title': 'Shopping Cart Screen'},
     {'page': const ProfileScreen(), 'title': 'Profile  Screen'},
   ];
@@ -57,8 +58,8 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
               label: "Home"),
           BottomNavigationBarItem(
               icon: Icon(_selectedIndex == 1
-                  ? IconlyBold.category
-                  : IconlyLight.category),
+                  ? IconlyBold.location
+                  : IconlyLight.location),
               label: "Categories"),
           BottomNavigationBarItem(
               icon: Icon(

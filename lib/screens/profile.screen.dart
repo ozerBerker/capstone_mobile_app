@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
-  String? _email, _name, _bio;
+  String? _email, _name, _bio, _gender;
   bool _isLoading = false;
   final User? user = authInstance.currentUser;
 
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
-                      'assets/images/box.png',
+                      'assets/images/profile.png',
                       height: size.width * 0.2,
                     ),
                   ),

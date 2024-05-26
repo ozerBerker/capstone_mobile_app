@@ -31,7 +31,7 @@ class OrderScreen extends StatelessWidget {
                   subtitle:
                       'You didnt place any order yet\nOrder & make our furry friends happy :)',
                   buttonText: 'Donate Now',
-                  imagePath: 'assets/images/cart.png',
+                  imagePath: 'assets/images/cart.jpeg',
                   primary: Colors.blue,
                   fct: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(

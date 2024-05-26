@@ -42,126 +42,146 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     final foodBowlModel = Provider.of<FoodBowlModel>(context);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 25.0, bottom: 15),
+      padding: const EdgeInsets.all(12),
       child: Material(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.shade200,
+        color: Color(0xff1C4189).withOpacity(0.8),
         child: InkWell(
           onTap: () {
-            // GlobalMethods()
-            //     .navigateTo(ctx: context, routeName: ProductDetails.routeName);
-            Navigator.pushNamed(context, FoodBowlDetail.routeName,
-                arguments: foodBowlModel.id);
+            if (foodBowlModel.isActieve) {
+              Navigator.pushNamed(context, FoodBowlDetail.routeName,
+                  arguments: foodBowlModel.id);
+            }
           },
           borderRadius: BorderRadius.circular(12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              FancyShimmerImage(
-                imageUrl: foodBowlModel.imageUrl,
-                height: size.width * 0.2,
-                width: size.width * 0.2,
-                boxFit: BoxFit.fill,
-              ),
-              TextWidget(
-                text: foodBowlModel.location,
-                color: color,
-                textSize: 22,
-                isTitle: true,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  Image.asset(
+                    'assets/images/cart-icon.png',
+                    height: size.width * 0.25,
+                    width: size.width * 0.25,
+                  ),
+                  // FancyShimmerImage(
+                  //   imageUrl: foodBowlModel.imageUrl,
+                  //   height: size.width * 0.2,
+                  //   width: size.width * 0.2,
+                  //   boxFit: BoxFit.fill,
+                  // ),
                   TextWidget(
-                    text: 'Bowl: ',
-                    color: color,
-                    textSize: 14,
+                    text: foodBowlModel.location,
+                    color: Colors.white,
+                    textSize: 22,
                     isTitle: true,
                   ),
-                  TextWidget(
-                      text: foodBowlModel.bowlLevel,
-                      color: color,
-                      textSize: 14),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  TextWidget(
-                    text: 'Container: ',
-                    color: color,
-                    textSize: 14,
-                    isTitle: true,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextWidget(
+                        text: 'Bowl: ',
+                        color: Colors.white,
+                        textSize: 14,
+                        isTitle: true,
+                      ),
+                      TextWidget(
+                          text: foodBowlModel.bowlLevel,
+                          color: Colors.white,
+                          textSize: 14),
+                    ],
                   ),
-                  TextWidget(
-                      text: foodBowlModel.containerSlot.toString(),
-                      color: color,
-                      textSize: 14),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextWidget(
+                        text: 'Container: ',
+                        color: Colors.white,
+                        textSize: 14,
+                        isTitle: true,
+                      ),
+                      TextWidget(
+                          text: foodBowlModel.containerSlot.toString(),
+                          color: Colors.white,
+                          textSize: 14),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (foodBowlModel.isActieve) {
+                          Navigator.pushNamed(context, FoodBowlDetail.routeName,
+                              arguments: foodBowlModel.id);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(size.width * 0.3, size.height * 0.05),
+                        backgroundColor: Color(0xffFF914D).withOpacity(0.9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: TextWidget(
+                        text: 'Donate',
+                        color: Colors.white,
+                        textSize: 20,
+                        isTitle: true,
+                      )),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 50),
+                  //   child: Flexible(
+                  //       flex: 2,
+                  //       child: TextFormField(
+                  //         controller: _quantityTextController,
+                  //         key: const ValueKey('10'),
+                  //         style: TextStyle(color: color, fontSize: 16),
+                  //         keyboardType: TextInputType.number,
+                  //         maxLines: 1,
+                  //         textAlign: TextAlign.center,
+                  //         enabled: true,
+                  //         onChanged: (value) {},
+                  //         inputFormatters: [
+                  //           FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+                  //         ],
+                  //       )),
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+
+                  // ElevatedButton(
+                  //     onPressed: () {},
+                  //     style: ElevatedButton.styleFrom(
+                  //       minimumSize: Size(size.width * 0.3, size.height * 0.05),
+                  //       backgroundColor: Colors.teal,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //       ),
+                  //     ),
+                  //     child: TextWidget(
+                  //       text: 'Donate',
+                  //       color: Colors.white,
+                  //       textSize: 20,
+                  //       isTitle: true,
+                  //     )),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, FoodBowlDetail.routeName,
-                        arguments: foodBowlModel.id);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(size.width * 0.3, size.height * 0.05),
-                    backgroundColor: Colors.teal,
-                    shape: RoundedRectangleBorder(
+              if (!foodBowlModel.isActieve)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey.withOpacity(0.7),
                     ),
                   ),
-                  child: TextWidget(
-                    text: 'Donate',
-                    color: Colors.white,
-                    textSize: 20,
-                    isTitle: true,
-                  )),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 50),
-              //   child: Flexible(
-              //       flex: 2,
-              //       child: TextFormField(
-              //         controller: _quantityTextController,
-              //         key: const ValueKey('10'),
-              //         style: TextStyle(color: color, fontSize: 16),
-              //         keyboardType: TextInputType.number,
-              //         maxLines: 1,
-              //         textAlign: TextAlign.center,
-              //         enabled: true,
-              //         onChanged: (value) {},
-              //         inputFormatters: [
-              //           FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
-              //         ],
-              //       )),
-              // ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-
-              // ElevatedButton(
-              //     onPressed: () {},
-              //     style: ElevatedButton.styleFrom(
-              //       minimumSize: Size(size.width * 0.3, size.height * 0.05),
-              //       backgroundColor: Colors.teal,
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //     ),
-              //     child: TextWidget(
-              //       text: 'Donate',
-              //       color: Colors.white,
-              //       textSize: 20,
-              //       isTitle: true,
-              //     )),
+                ),
             ],
           ),
         ),

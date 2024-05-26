@@ -102,12 +102,15 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
           children: [
             Flexible(
               flex: 2,
-              child: FancyShimmerImage(
-                // imageUrl: getCurrFoodBowl.imageUrl,
-                imageUrl: 'assets/images/card-image-5.png',
-                boxFit: BoxFit.fill,
-                width: size.width,
+              child: Image.asset(
+                'assets/images/detail-icon.jpeg',
               ),
+              // FancyShimmerImage(
+              //   // imageUrl: getCurrFoodBowl.imageUrl,
+              //   imageUrl: 'assets/images/detail-icon.png',
+              //   boxFit: BoxFit.fill,
+              //   width: size.width,
+              // ),
             ),
             Flexible(
                 flex: 3,
@@ -167,7 +170,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                                 horizontal: 8,
                               ),
                               decoration: BoxDecoration(
-                                  color: Color.fromRGBO(63, 200, 101, 1),
+                                  color: Color(0xff1C4189),
                                   borderRadius: BorderRadius.circular(5)),
                               child: Row(
                                 children: [
@@ -277,7 +280,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                               children: [
                                 TextWidget(
                                   text: 'Total',
-                                  color: Colors.red.shade300,
+                                  color: Color(0xff1C4189),
                                   textSize: 20,
                                   isTitle: true,
                                 ),
@@ -311,7 +314,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                             ),
                             Flexible(
                                 child: Material(
-                              color: Colors.green,
+                              color: Color(0xff1C4189),
                               borderRadius: BorderRadius.circular(10),
                               child: InkWell(
                                 onTap: () async {
@@ -328,6 +331,9 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                                       .pushReplacement(MaterialPageRoute(
                                     builder: (context) => DonationScreen(
                                       donationStatus: donationStatus,
+                                      id: getCurrFoodBowl.id,
+                                      rmnFood: int.parse(
+                                          _quantityTextController.text),
                                     ),
                                   ));
                                 },
@@ -335,9 +341,11 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
                                 child: Padding(
                                   padding: EdgeInsets.all(12.0),
                                   child: TextWidget(
-                                      text: 'Donate',
-                                      color: Colors.white,
-                                      textSize: 18),
+                                    text: 'Donate',
+                                    color: Colors.white,
+                                    textSize: 18,
+                                    isTitle: true,
+                                  ),
                                 ),
                               ),
                             ))
@@ -427,7 +435,7 @@ class _FoodBowlDetailState extends State<FoodBowlDetail> {
         'foodBowlId': currFoodBowl.id,
         'userName': user.displayName,
         'userEmail': user.email,
-        'price': currFoodBowl.price,
+        'price': totalPrice,
         'containerSlot': currFoodBowl.containerSlot,
         'imageUrl': currFoodBowl.imageUrl,
         'orderDate': Timestamp.now(),

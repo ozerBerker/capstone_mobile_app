@@ -8,8 +8,12 @@ class DonationScreen extends StatefulWidget {
   const DonationScreen({
     super.key,
     required this.donationStatus,
+    required this.id,
+    required this.rmnFood,
   });
   final bool donationStatus;
+  final String id;
+  final int rmnFood;
 
   @override
   State<DonationScreen> createState() => _DonationScreenState();
@@ -28,11 +32,11 @@ class _DonationScreenState extends State<DonationScreen> {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.reference().child('foodBowls');
 
-    String recordKey =
-        '6f3db20d-cba9-4c09-aea5-ead3ffdd7625'; // Replace with your record key
+    // String recordKey =
+    //     '6f3db20d-cba9-4c09-aea5-ead3ffdd7625';
 
-    databaseReference.child(recordKey).update({
-      'rmnFood': 4,
+    databaseReference.child(widget.id).update({
+      'rmnFood': widget.rmnFood,
     });
 
     await Fluttertoast.showToast(
@@ -53,7 +57,7 @@ class _DonationScreenState extends State<DonationScreen> {
             title: 'Success!',
             subtitle: 'Donation made successfully! ',
             buttonText: 'Home Page',
-            imagePath: 'assets/images/cart.png',
+            imagePath: 'assets/images/success.png',
             primary: Colors.green,
             fct: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -66,7 +70,7 @@ class _DonationScreenState extends State<DonationScreen> {
             subtitle:
                 'Something went wrong, but it`s\n nothing to worry about!',
             buttonText: 'Load Money',
-            imagePath: 'assets/images/cart.png',
+            imagePath: 'assets/images/failed.png',
             primary: Colors.red,
             fct: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(

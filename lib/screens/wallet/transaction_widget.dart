@@ -27,9 +27,14 @@ class TransactionWidget extends StatelessWidget {
     final transactionModel = Provider.of<TransactionModel>(context);
 
     return ListTile(
-      subtitle: Text(
-          'Current Balance: ₺${transactionModel.isItInflow ? sumBalance(transactionModel.oldAmount, transactionModel.processAmount) : extractBalance(transactionModel.oldAmount, transactionModel.processAmount)}'),
-      leading: Icon(transactionModel.isItInflow ? Icons.login : Icons.logout),
+      // subtitle: Text(
+      //     'Current Balance: ₺${transactionModel.isItInflow ? sumBalance(transactionModel.oldAmount, transactionModel.processAmount) : extractBalance(transactionModel.oldAmount, transactionModel.processAmount)}'),
+      // leading: Icon(transactionModel.isItInflow ? Icons.login : Icons.logout),
+      leading: Image.asset(
+        transactionModel.isItInflow
+            ? 'assets/images/add-balance.png'
+            : 'assets/images/payment.png',
+      ),
       title: TextWidget(
         text: GlobalMethods.orderDateToShow(transactionModel.processDate),
         color: color,

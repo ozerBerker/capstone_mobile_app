@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/consts/firebase_consts.dart';
 import 'package:mobile_app/fetch_screen.dart';
+import 'package:mobile_app/screens/auth/forgot_passwprd.dart';
 import 'package:mobile_app/screens/auth/login.dart';
 import 'package:mobile_app/screens/loading_manager.dart';
 import 'package:mobile_app/services/global_methods.dart';
@@ -68,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'name': _fullNameTextController.text,
           'email': _emailTextController.text.toLowerCase(),
           'bio': '',
+          'Gender': '',
           'userWallet': 0,
           'createTime': Timestamp.now(),
         });
@@ -287,7 +289,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Align(
                       alignment: Alignment.topRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GlobalMethods.navigateTo(
+                              ctx: context,
+                              routeName: ForgotPasswordScreen.routeName);
+                        },
                         child: const Text(
                           'Forgot password?',
                           maxLines: 1,
