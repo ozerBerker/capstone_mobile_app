@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobile_app/fetch_screen.dart';
+import 'package:mobile_app/services/global_methods.dart';
 import 'package:mobile_app/widgets/empty_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -20,23 +21,40 @@ class DonationScreen extends StatefulWidget {
 }
 
 class _DonationScreenState extends State<DonationScreen> {
+  int donatedSlot = -1;
+
   @override
   void initState() {
+    getDonatedSlot();
+    super.initState();
     if (widget.donationStatus) {
       sendDonationToFoodBowl();
     }
-    super.initState();
+  }
+
+  Future<void> getDonatedSlot() async {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .ref()
+        .child('foodBowls')
+        .child("6f3db20d-cba9-4c09-aea5-ead3ffdd7625");
+
+    databaseReference.onValue.listen((event) {
+      DataSnapshot dataSnapshot = event.snapshot;
+      if (dataSnapshot.value != null) {
+        final values = Map<dynamic, dynamic>.from(dataSnapshot.value as Map);
+        setState(() {
+          donatedSlot = values['rmnFood'];
+        });
+      }
+    });
   }
 
   Future<void> sendDonationToFoodBowl() async {
     DatabaseReference databaseReference =
-        FirebaseDatabase.instance.reference().child('foodBowls');
+        FirebaseDatabase.instance.ref().child('foodBowls').child(widget.id);
 
-    // String recordKey =
-    //     '6f3db20d-cba9-4c09-aea5-ead3ffdd7625';
-
-    databaseReference.child(widget.id).update({
-      'rmnFood': widget.rmnFood,
+    databaseReference.update({
+      'rmnFood': donatedSlot + widget.rmnFood,
     });
 
     await Fluttertoast.showToast(
@@ -55,7 +73,7 @@ class _DonationScreenState extends State<DonationScreen> {
     return widget.donationStatus
         ? EmptyScreen(
             title: 'Success!',
-            subtitle: 'Donation made successfully! ',
+            subtitle: 'Donation made successfully!',
             buttonText: 'Home Page',
             imagePath: 'assets/images/success.png',
             primary: Colors.green,
